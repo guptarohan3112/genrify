@@ -3,23 +3,26 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class Main {
 
+    public static String[] fixCat(String category){
+        category = category.replaceAll("\\\\", "&");
+        category = category.replaceAll(":", "_");
+        return category.split("/");
+    }
 
-        public static String fixPath(String dir){
-            dir = dir.replaceAll(" ", "_");
-            dir = dir.replaceAll("<", "_");
-            dir = dir.replaceAll(">", "_");
-            return dir;
-        }
+
+    public static String fixPath(String dir) {
+        dir = dir.replaceAll(" ", "_");
+        dir = dir.replaceAll("<", "_");
+        dir = dir.replaceAll(">", "_");
+        return dir;
+    }
 
     public static void createFolder(String folder) {
         String nullCheck = folder.substring(folder.lastIndexOf('/') + 1).trim();
@@ -77,10 +80,7 @@ public class Main {
                 categories.add("undefined");
             } else {
                 String category = mp3.getCat(sort);
-                category = category.replaceAll("/", "&");
-                category = category.replaceAll("\\\\", "&");
-                category = category.replaceAll(":", "_");
-                categories.add(category);
+                Collections.addAll(categories, fixCat(category));
             }
         }
 
@@ -90,23 +90,27 @@ public class Main {
 
         /* for each category, traverse list of music and copy if matches */
         for (String category : categories) {
-            for (int i = 0; i < music.size(); i++) {
-                String thisCategory;
-                if (music.get(i).getCat(sort) == null) {
-                    thisCategory = "undefined";
-                } else {
-                    thisCategory = music.get(i).getCat(sort);
-                    thisCategory = thisCategory.replaceAll("/", "&");
-                    thisCategory = thisCategory.replaceAll("\\\\", "&");
-                    thisCategory = thisCategory.replaceAll(":", "_");
 
+            for (MP3Data mp3Data : music) {
+                Set<String> cats = new HashSet<>();
+                String thisCategory;
+
+                if (mp3Data.getCat(sort) == null) {
+                    thisCategory = "undefined";
+                    cats.add(thisCategory);
+                } else {
+                    thisCategory = mp3Data.getCat(sort);
+                    Collections.addAll(cats, fixCat(thisCategory));
                 }
-                if (thisCategory.equals(category)) {
-                    String fileName = music.get(i).getFile().getName();
-                    String origName = folderLocation + '/' + fileName;
-                    String outName = outputFolder + '/' + category + '/' + fileName;
-                    copyFile(origName, outName);
-                    music.remove(i);
+
+
+                for (String cat : cats) {
+                    if (cat.equals(category)) {
+                        String fileName = mp3Data.getFile().getName();
+                        String origName = folderLocation + '/' + fileName;
+                        String outName = outputFolder + '/' + category + '/' + fileName;
+                        copyFile(origName, outName);
+                    }
                 }
             }
         }
