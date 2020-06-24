@@ -13,14 +13,22 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class Main {
 
-    public static void createFolder(String folder) {
 
+        public static String fixPath(String dir){
+            dir = dir.replaceAll(" ", "_");
+            dir = dir.replaceAll("<", "_");
+            dir = dir.replaceAll(">", "_");
+            return dir;
+        }
+
+    public static void createFolder(String folder) {
         String nullCheck = folder.substring(folder.lastIndexOf('/') + 1).trim();
         if (folder.isEmpty() || nullCheck.equals("null")) {
             String root = folder.substring(0, folder.lastIndexOf('/'));
             folder = root + '/' + "undefined";
         }
 
+        folder = fixPath(folder);
         Path path = Paths.get(folder);
         if (!Files.exists(path)) {
             try {
@@ -34,6 +42,7 @@ public class Main {
 
     public static void copyFile(String original, String output) throws IOException {
         File source = new File(original);
+        output = fixPath(output);
         File dest = new File(output);
         Files.copy(source.toPath(), dest.toPath(), REPLACE_EXISTING);
     }
@@ -64,10 +73,14 @@ public class Main {
         Set<String> categories = new HashSet<>();
 
         for (MP3Data mp3 : music) {
-            if (mp3.getCat(sort) == null) {
+            if (mp3.getCat(sort) == null || mp3.getCat(sort).isEmpty()) {
                 categories.add("undefined");
             } else {
-                categories.add(mp3.getCat(sort));
+                String category = mp3.getCat(sort);
+                category = category.replaceAll("/", "&");
+                category = category.replaceAll("\\\\", "&");
+                category = category.replaceAll(":", "_");
+                categories.add(category);
             }
         }
 
@@ -83,10 +96,15 @@ public class Main {
                     thisCategory = "undefined";
                 } else {
                     thisCategory = music.get(i).getCat(sort);
+                    thisCategory = thisCategory.replaceAll("/", "&");
+                    thisCategory = thisCategory.replaceAll("\\\\", "&");
+                    thisCategory = thisCategory.replaceAll(":", "_");
+
                 }
                 if (thisCategory.equals(category)) {
-                    String origName = folderLocation + '/' + music.get(i).getFile().getName();
-                    String outName = outputFolder + '/' + category + '/' + music.get(i).getFile().getName();
+                    String fileName = music.get(i).getFile().getName();
+                    String origName = folderLocation + '/' + fileName;
+                    String outName = outputFolder + '/' + category + '/' + fileName;
                     copyFile(origName, outName);
                     music.remove(i);
                 }

@@ -15,5 +15,4 @@ class GUI{
         frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
         frame.setVisible(true);
     }
-
 }

@@ -1,9 +1,3 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
@@ -12,6 +6,11 @@ import org.apache.tika.parser.mp3.Mp3Parser;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MP3Data {
     File file;
@@ -66,19 +65,13 @@ public class MP3Data {
     }
 
     public String getCat(Sort sort){
-        switch (sort) {
-            case genre :
-                return getGenre();
-            case album :
-                return getAlbum();
-            case artist :
-                return getArtist();
-            case composer:
-                return getComposer();
-
-            default:
-                return "invalid type";
-        }
+        return switch (sort) {
+            case genre -> getGenre();
+            case album -> getAlbum();
+            case artist -> getArtist();
+            case composer -> getComposer();
+            default -> "invalid type";
+        };
     }
 
     @Override

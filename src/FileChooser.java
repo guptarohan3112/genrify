@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +9,7 @@ public class FileChooser extends JPanel implements ActionListener {
     JButton chooseButton;
     JTextArea log;
     JFileChooser fc;
-    File dir;
+    String dir;
 
     public FileChooser(String label) {
         super(new BorderLayout());
@@ -39,8 +38,8 @@ public class FileChooser extends JPanel implements ActionListener {
         int returnVal = fc.showOpenDialog(FileChooser.this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            dir = fc.getSelectedFile();
-            log.append("Opening: " + dir.getName() + ".\n");
+            dir = fc.getSelectedFile().getAbsolutePath();
+            log.append("Opening: " + dir + ".\n");
         } else {
             log.append("Open command cancelled by user.\n");
         }
@@ -48,6 +47,6 @@ public class FileChooser extends JPanel implements ActionListener {
     }
 
     public String getDir() {
-        return dir.getName();
+        return dir;
     }
 }
