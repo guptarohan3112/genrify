@@ -1,8 +1,5 @@
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,15 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.parser.mp3.Mp3Parser;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -37,7 +25,7 @@ public class Main {
         if (!Files.exists(path)) {
             try {
                 Files.createDirectories(path);
-                System.out.println("Created directory: " + folder);
+                System.out.println("\nCreated directory: " + folder);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -52,10 +40,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        if (args.length != 2) {
-            System.err.println("Please rerun with two arguments (read and output folder)");
+        if (args.length != 3) {
+            System.err.println("Please rerun with three arguments (read and output folder, and sort mode)");
             System.exit(1);
         }
+
+        int choice = Integer.parseInt(args[2]);
+        Sort sort = Sort.values()[choice];
 
         List<MP3Data> music = new ArrayList<>();
         /* first arg is unsorted folder */
@@ -81,15 +72,14 @@ public class Main {
         /* if output folder does not exist, create it */
         createFolder(outputFolder);
 
-        /* First obtain list of genres and create folders for each one */
+        /* First obtain set categories and create folders for each one */
         Set<String> categories = new HashSet<>();
 
         for (MP3Data mp3 : music) {
-            String genre;
-            if (mp3.getGenre() == null) {
+            if (mp3.getCat(sort) == null) {
                 categories.add("undefined");
             } else {
-                categories.add(mp3.getGenre());
+                categories.add(mp3.getCat(sort));
             }
         }
 
@@ -97,22 +87,22 @@ public class Main {
             createFolder(outputFolder + '/' + category);
         }
 
-        /* for each genre, traverse list of music and copy if matches */
+        /* for each category, traverse list of music and copy if matches */
         for (String category : categories) {
-            for (MP3Data mp3 : music) {
-                String genre;
-                if (mp3.getGenre() == null) {
-                    genre = "undefined";
+            for (int i = 0; i < music.size() ; i++) {
+                String thisCategory;
+                if (music.get(i).getCat(sort) == null) {
+                    thisCategory = "undefined";
                 } else {
-                    genre = mp3.getGenre();
+                    thisCategory = music.get(i).getCat(sort);
                 }
-                if (genre.equals(category)) {
-                    String origName = folderLocation + '/' + mp3.getFile().getName();
-                    String outName = outputFolder + '/' + category + '/' + mp3.getFile().getName();
+                if (thisCategory.equals(category)) {
+                    String origName = folderLocation + '/' + music.get(i).getFile().getName();
+                    String outName = outputFolder + '/' + category + '/' + music.get(i).getFile().getName();
                     copyFile(origName, outName);
+                    music.remove(i);
                 }
             }
         }
-
     }
 }

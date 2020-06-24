@@ -45,24 +45,40 @@ public class MP3Data {
         }
     }
 
-    public String getTitle(){
+    private String getTitle(){
         return metadata.get("title");
     }
 
-    public String getArtist(){
+    private String getArtist(){
         return metadata.get("xmpDM:artist");
     }
 
-    public String getComposer(){
+    private String getComposer(){
         return metadata.get("xmpDM:composer");
     }
 
-    public String getGenre(){
+    private String getGenre(){
         return metadata.get("xmpDM:genre");
     }
 
-    public String getAlbum(){
+    private String getAlbum(){
         return metadata.get("xmpDM:album");
+    }
+
+    public String getCat(Sort sort){
+        switch (sort) {
+            case genre :
+                return getGenre();
+            case album :
+                return getAlbum();
+            case artist :
+                return getArtist();
+            case composer:
+                return getComposer();
+
+            default:
+                return "invalid type";
+        }
     }
 
     @Override
