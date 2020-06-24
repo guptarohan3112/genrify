@@ -38,21 +38,9 @@ public class Main {
         Files.copy(source.toPath(), dest.toPath(), REPLACE_EXISTING);
     }
 
-    public static void main(String[] args) throws IOException {
-
-        if (args.length != 3) {
-            System.err.println("Please rerun with three arguments (read and output folder, and sort mode)");
-            System.exit(1);
-        }
-
-        int choice = Integer.parseInt(args[2]);
-        Sort sort = Sort.values()[choice];
+    public static void sortFolder(String folderLocation, String outputFolder, Sort sort) throws IOException {
 
         List<MP3Data> music = new ArrayList<>();
-        /* first arg is unsorted folder */
-        String folderLocation = args[0];
-        /* second arg is output folder */
-        String outputFolder = args[1];
 
         /* Read in all files from unsorted directory */
         List<File> filesInFolder = Files.walk(Paths.get(folderLocation))
@@ -89,7 +77,7 @@ public class Main {
 
         /* for each category, traverse list of music and copy if matches */
         for (String category : categories) {
-            for (int i = 0; i < music.size() ; i++) {
+            for (int i = 0; i < music.size(); i++) {
                 String thisCategory;
                 if (music.get(i).getCat(sort) == null) {
                     thisCategory = "undefined";
