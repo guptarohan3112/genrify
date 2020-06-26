@@ -2,14 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 public class FileChooser extends JPanel implements ActionListener {
 
-    JButton chooseButton;
-    JTextArea log;
-    JFileChooser fc;
-    String dir;
+    private final JTextArea log;
+    private final JFileChooser fc;
+    private String dir;
 
     public FileChooser(String label) {
         super(new BorderLayout());
@@ -22,7 +20,7 @@ public class FileChooser extends JPanel implements ActionListener {
         fc = new JFileChooser();
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        chooseButton = new JButton("choose this directory... (" + label + ")");
+        JButton chooseButton = new JButton("choose this directory... (" + label + ")");
 
         chooseButton.addActionListener(this);
 

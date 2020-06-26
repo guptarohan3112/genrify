@@ -92,6 +92,7 @@ public class Main {
         for (String category : categories) {
 
             for (MP3Data mp3Data : music) {
+                /* allows for splitting by '/' character */
                 Set<String> cats = new HashSet<>();
                 String thisCategory;
 

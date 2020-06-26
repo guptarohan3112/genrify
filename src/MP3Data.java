@@ -13,17 +13,16 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class MP3Data {
-    File file;
-    InputStream input;
-    ContentHandler handler = new DefaultHandler();
-    Metadata metadata = new Metadata();
-    Parser parser = new Mp3Parser();
-    ParseContext parseCtx = new ParseContext();
+    private final File file;
+    private final Metadata metadata = new Metadata();
 
     public MP3Data(File file) {
         this.file = file;
         try {
-            input = new FileInputStream(file);
+            InputStream input = new FileInputStream(file);
+            ParseContext parseCtx = new ParseContext();
+            Parser parser = new Mp3Parser();
+            ContentHandler handler = new DefaultHandler();
             parser.parse(input, handler, metadata, parseCtx);
             input.close();
         } catch (
@@ -36,8 +35,9 @@ public class MP3Data {
         return this.file;
     }
 
+    @SuppressWarnings("unused")
     public void printMeta() {
-        // List all metadata
+        // List all metadata, used for debugging
         String[] metadataNames = metadata.names();
         for (String name : metadataNames) {
             System.out.println(name + ": " + metadata.get(name));
@@ -70,7 +70,6 @@ public class MP3Data {
             case album -> getAlbum();
             case artist -> getArtist();
             case composer -> getComposer();
-            default -> "invalid type";
         };
     }
 

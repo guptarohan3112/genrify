@@ -5,18 +5,15 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class ButtonContainer extends JPanel implements ActionListener {
-    JButton select;
-    JRadioButton genreButton, artistButton, albumButton, composerButton;
-    Sort sort;
-    FileChooser fileChooser;
-    FileChooser destChooser;
+    private final JRadioButton genreButton, artistButton, albumButton, composerButton;
+    private Sort sort;
+    private final FileChooser fileChooser;
+    private final FileChooser destChooser;
 
     public ButtonContainer(FileChooser fileChooser, FileChooser destChooser) {
 
         this.fileChooser = fileChooser;
         this.destChooser = destChooser;
-
-        JPanel panel = new JPanel();
 
         genreButton = new JRadioButton("Genre");
         genreButton.setToolTipText("Sorts based on genre");
@@ -36,7 +33,7 @@ public class ButtonContainer extends JPanel implements ActionListener {
         group.add(artistButton);
         group.add(albumButton);
         group.add(composerButton);
-        select = new JButton("SELECT");
+        JButton select = new JButton("SELECT");
         select.addActionListener(this);
 
         genreButton.setActionCommand("genre");
