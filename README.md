@@ -1,7 +1,8 @@
 # Genrify
 Automatically sorts music files into folders based on their genre
-Version 1.1
-       
+Version 1.1  
+https://youtu.be/QK-1j1vZdyE
+
 All music will be sorted using metadata on given category,
 
 Note that if the name has a '/' in it, eg. Pop/Rock, the song will be added to both the Pop and Rock folder. 
