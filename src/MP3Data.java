@@ -65,12 +65,13 @@ public class MP3Data {
     }
 
     public String getCat(Sort sort){
-        return switch (sort) {
-            case genre -> getGenre();
-            case album -> getAlbum();
-            case artist -> getArtist();
-            case composer -> getComposer();
-        };
+        switch (sort) {
+            case genre : return getGenre();
+            case artist : return getArtist();
+            case composer : return getComposer();
+            case album : return getAlbum();
+            default: return "undefined";
+        }
     }
 
     @Override
