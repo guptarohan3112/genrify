@@ -14,6 +14,7 @@ import java.io.InputStream;
 
 public abstract class Data {
     protected final File file;
+    protected Metadata metadata = new Metadata();
 
     public Data(File file, Parser parser) {
         this.file = file;
@@ -21,7 +22,7 @@ public abstract class Data {
             InputStream input = new FileInputStream(file);
             ParseContext parseCtx = new ParseContext();
             ContentHandler handler = new DefaultHandler();
-            parser.parse(input, handler, new Metadata(), parseCtx);
+            parser.parse(input, handler, metadata, parseCtx);
             input.close();
         } catch (
                 TikaException | IOException |

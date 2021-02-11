@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class MP3Data extends Data{
-    private final Metadata metadata = new Metadata();
 
     public MP3Data(File file) {
         super(file, new Mp3Parser());
