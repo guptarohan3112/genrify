@@ -36,9 +36,13 @@ public abstract class Data {
     public abstract void printMeta();
 
     public abstract String getTitle();
+
     public abstract String getComposer();
+
     public abstract String getGenre();
+
     public abstract String getAlbum();
+
     public abstract String getCat(Sort sort);
 
 }
