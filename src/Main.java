@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-public class Main {
+public class Main{
 
     public static String[] fixCat(String category){
         category = category.replaceAll("\\\\", "&");
@@ -52,7 +52,7 @@ public class Main {
 
     public static void sortFolder(String folderLocation, String outputFolder, Sort sort) throws IOException {
 
-        List<MP3Data> music = new ArrayList<>();
+        List<Data> store = new ArrayList<>();
 
         /* Read in all files from unsorted directory */
         List<File> filesInFolder = Files.walk(Paths.get(folderLocation))
@@ -62,11 +62,11 @@ public class Main {
 
         /* Get MP3 data for each file and print */
         for (File file : filesInFolder) {
-            music.add(new MP3Data(file));
+            store.add(new MP3Data(file));
         }
 
-        for (MP3Data mp3 : music) {
-            System.out.println(mp3);
+        for (Data data : store) {
+            System.out.println(data);
         }
 
         /* if output folder does not exist, create it */
@@ -75,11 +75,11 @@ public class Main {
         /* First obtain set categories and create folders for each one */
         Set<String> categories = new HashSet<>();
 
-        for (MP3Data mp3 : music) {
-            if (mp3.getCat(sort) == null || mp3.getCat(sort).isEmpty()) {
+        for (Data data : store) {
+            if (data.getCat(sort) == null || data.getCat(sort).isEmpty()) {
                 categories.add("undefined");
             } else {
-                String category = mp3.getCat(sort);
+                String category = data.getCat(sort);
                 Collections.addAll(categories, fixCat(category));
             }
         }
@@ -88,26 +88,26 @@ public class Main {
             createFolder(outputFolder + '/' + category);
         }
 
-        /* for each category, traverse list of music and copy if matches */
+        /* for each category, traverse list of store and copy if matches */
         for (String category : categories) {
 
-            for (MP3Data mp3Data : music) {
+            for (Data data : store) {
                 /* allows for splitting by '/' character */
                 Set<String> cats = new HashSet<>();
                 String thisCategory;
 
-                if (mp3Data.getCat(sort) == null) {
+                if (data.getCat(sort) == null) {
                     thisCategory = "undefined";
                     cats.add(thisCategory);
                 } else {
-                    thisCategory = mp3Data.getCat(sort);
+                    thisCategory = data.getCat(sort);
                     Collections.addAll(cats, fixCat(thisCategory));
                 }
 
 
                 for (String cat : cats) {
                     if (cat.equals(category)) {
-                        String fileName = mp3Data.getFile().getName();
+                        String fileName = data.getFile().getName();
                         String origName = folderLocation + '/' + fileName;
                         String outName = outputFolder + '/' + category + '/' + fileName;
                         copyFile(origName, outName);

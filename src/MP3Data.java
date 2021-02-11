@@ -12,23 +12,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class MP3Data {
-    private final File file;
+public class MP3Data extends Data{
     private final Metadata metadata = new Metadata();
 
     public MP3Data(File file) {
-        this.file = file;
-        try {
-            InputStream input = new FileInputStream(file);
-            ParseContext parseCtx = new ParseContext();
-            Parser parser = new Mp3Parser();
-            ContentHandler handler = new DefaultHandler();
-            parser.parse(input, handler, metadata, parseCtx);
-            input.close();
-        } catch (
-                TikaException | IOException | SAXException e) {
-            e.printStackTrace();
-        }
+        super(file, new Mp3Parser());
     }
 
     public File getFile() {
@@ -44,23 +32,23 @@ public class MP3Data {
         }
     }
 
-    private String getTitle(){
+    public String getTitle(){
         return metadata.get("title");
     }
 
-    private String getArtist(){
+    public String getArtist(){
         return metadata.get("xmpDM:artist");
     }
 
-    private String getComposer(){
+    public String getComposer(){
         return metadata.get("xmpDM:composer");
     }
 
-    private String getGenre(){
+    public String getGenre(){
         return metadata.get("xmpDM:genre");
     }
 
-    private String getAlbum(){
+    public String getAlbum(){
         return metadata.get("xmpDM:album");
     }
 
