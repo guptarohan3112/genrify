@@ -1,3 +1,8 @@
+package front_end;
+
+import back_end.Main;
+import back_end.Sort;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -1,18 +1,11 @@
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
+package back_end;
+
+import back_end.Data;
 import org.apache.tika.parser.mp3.Mp3Parser;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
-public class MP3Data extends Data{
+public class MP3Data extends Data {
 
     public MP3Data(File file) {
         super(file, new Mp3Parser());

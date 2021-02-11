@@ -1,3 +1,5 @@
+package front_end;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

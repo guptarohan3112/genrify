@@ -1,3 +1,8 @@
+package front_end;
+
+import front_end.ButtonContainer;
+import front_end.FileChooser;
+
 import javax.swing.*;
 import java.awt.*;
 

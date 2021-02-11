@@ -1,3 +1,5 @@
+package back_end;
+
 import com.google.protobuf.AbstractParser;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
